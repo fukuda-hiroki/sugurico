@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes; // ★このimportを追加
 import java.util.Optional;
 
 @Controller // このクラスがWebリクエストを処理するControllerであることを示す
@@ -49,15 +50,25 @@ public class UserController {
      * @return 処理完了後のリダイレクト先URL
      */
     @PostMapping("/register")
-    public String registerUser(UserForm userForm) {
-        // 1. UserForm（画面からのデータ）をUserEntity（DB保存用オブジェクト）にコピー
+    public String registerUser(UserForm userForm, RedirectAttributes redirectAttributes) { // ★引数にRedirectAttributesを追加
         UserEntity userEntity = new UserEntity();
         BeanUtils.copyProperties(userForm, userEntity);
 
-        // 2. UserServiceを呼び出して、ユーザー登録処理を依頼
-        userService.registerUser(userEntity);
+        // UserServiceを呼び出し、結果（エラーメッセージ or null）を受け取る
+        String errorMessage = userService.registerUser(userEntity);
 
-        // 3. 登録完了後、ログイン画面にリダイレクト（移動）させる
+        // もしerrorMessageがnullでなければ（＝エラーがあった場合）
+        if (errorMessage != null) {
+            // リダイレクト先にエラーメッセージと入力値を渡す
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
+            redirectAttributes.addFlashAttribute("userForm", userForm);
+
+            // 登録ページにリダイレクトして、エラーメッセージを表示させる
+            return "redirect:/register";
+        }
+
+        // 成功した場合は、登録完了メッセージを渡してログイン画面にリダイレクト
+        redirectAttributes.addFlashAttribute("successMessage", "ユーザー登録が完了しました。");
         return "redirect:/login";
     }
 
