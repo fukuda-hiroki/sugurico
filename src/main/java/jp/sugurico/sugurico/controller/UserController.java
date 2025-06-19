@@ -40,4 +40,14 @@ public class UserController {
         // 3. 登録完了後、ログイン画面にリダイレクト（移動）させる
         return "redirect:/login";
     }
+    // ... UserControllerの他のコード ...
+
+    /**
+     * ログイン画面を表示するためのメソッド
+     */
+    @GetMapping("/login")
+    public String showLoginForm() {
+        // "user/login.html" を表示する
+        return "user/login";
+    }
 }
