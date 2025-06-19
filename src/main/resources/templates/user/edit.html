@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登録情報変更</title>
+</head>
+<body>
+<h1>登録情報変更</h1>
+
+<!-- th:object="${userForm}" で、Controllerから渡されたuserFormオブジェクトを受け取る -->
+<form th:action="@{/user/edit}" th:object="${userForm}" method="post">
+    <div>
+        <label for="name">名前:</label>
+        <!-- th:field="*{name}" で、userFormのnameフィールドの値を表示 -->
+        <input type="text" id="name" th:field="*{name}" required>
+    </div>
+    <div>
+        <label for="userName">ユーザー名:</label>
+        <input type="text" id="userName" th:field="*{userName}" required>
+    </div>
+    <div>
+        <label for="mail">メールアドレス:</label>
+        <input type="email" id="mail" th:field="*{mail}" required>
+    </div>
+
+    <hr>
+    <p>パスワードを変更する場合は入力してください</p>
+    <div>
+        <label for="password">新しいパスワード:</label>
+        <!-- パスワードは値を表示しないので、th:fieldではなくname属性を使う -->
+        <input type="password" id="password" name="password">
+    </div>
+
+    <div>
+        <button type="submit">更新する</button>
+    </div>
+</form>
+<p><a th:href="@{/}">トップページに戻る</a></p>
+
+</body>
+</html>
