@@ -1,10 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>ユーザー登録</title>
 </head>
 <body>
-$END$
+<h1>ユーザー登録</h1>
+
+<!-- 登録フォーム -->
+<!-- th:action="@{/register}" : フォームの送信先を /register (POST) に指定 -->
+<!-- th:object="${userForm}" : このフォームがUserFormオブジェクトに対応することを示す（今はまだ使いませんが後で重要になります） -->
+<form th:action="@{/register}" method="post">
+    <div>
+        <label for="name">名前:</label>
+        <!-- inputタグのname属性を、UserFormのフィールド名と一致させる -->
+        <input type="text" id="name" name="name" required>
+    </div>
+    <div>
+        <label for="userName">ユーザー名:</label>
+        <input type="text" id="userName" name="userName" required>
+    </div>
+    <div>
+        <label for="loginId">ログインID:</label>
+        <input type="text" id="loginId" name="loginId" required>
+    </div>
+    <div>
+        <label for="mail">メールアドレス:</label>
+        <input type="email" id="mail" name="mail" required>
+    </div>
+    <div>
+        <label for="password">パスワード:</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    <div>
+        <button type="submit">登録する</button>
+    </div>
+</form>
+
 </body>
 </html>

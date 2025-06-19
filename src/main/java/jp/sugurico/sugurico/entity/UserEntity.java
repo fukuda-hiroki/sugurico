@@ -35,7 +35,7 @@ public class UserEntity {
     private String password;
 
     @Column(name = "date_create", nullable = false)
-    private LocalDateTime dateCrate;
+    private LocalDateTime dateCreate;
 
     @Column(name = "date_update", nullable = false)
     private LocalDateTime dateUpdate;
