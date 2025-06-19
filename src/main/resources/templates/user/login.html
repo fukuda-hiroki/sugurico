@@ -1,12 +1,41 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>ログイン</title>
 </head>
 <body>
 <h1>ログイン</h1>
-<p>ユーザー登録が完了しました！</p>
-<!-- ここに後でログインフォームを作成します -->
+
+<!-- ログイン失敗時にエラーメッセージを表示する -->
+<div th:if="${param.error}" style="color: red;">
+  ログインIDまたはパスワードが違います。
+</div>
+
+<!-- ログアウト時にメッセージを表示する -->
+<div th:if="${param.logout}">
+  ログアウトしました。
+</div>
+
+<!-- ログインフォーム -->
+<!-- th:action="@{/login}" はSpring Securityが処理するログインURL -->
+<form th:action="@{/login}" method="post">
+  <div>
+    <!-- ログインIDの入力欄。name属性は"username"にするのがSpring Securityの決まり -->
+    <label for="username">ログインID:</label>
+    <input type="text" id="username" name="username" required>
+  </div>
+  <div>
+    <!-- パスワードの入力欄。name属性は"password"にするのがSpring Securityの決まり -->
+    <label for="password">パスワード:</label>
+    <input type="password" id="password" name="password" required>
+  </div>
+  <div>
+    <button type="submit">ログイン</button>
+  </div>
+</form>
+
+<p>アカウントをお持ちでないですか？ <a th:href="@{/register}">ユーザー登録はこちら</a></p>
+
 </body>
 </html>

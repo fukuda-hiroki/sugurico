@@ -50,4 +50,14 @@ public class UserController {
         // "user/login.html" を表示する
         return "user/login";
     }
+
+    // ... UserControllerの他のコード ...
+
+    /**
+     * トップページを表示するためのメソッド
+     */
+    @GetMapping("/")
+    public String index() {
+        return "index"; // "index.html" を表示する
+    }
 }

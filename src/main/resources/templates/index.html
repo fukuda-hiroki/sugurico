@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>スグリコ - トップページ</title>
+</head>
+<body>
+<h1>スグリコ へようこそ！</h1>
+
+<!-- ログインしているユーザーにだけ表示される部分 -->
+<div sec:authorize="isAuthenticated()">
+    <!-- sec:authentication="name" で、ログイン中のユーザー名（この場合はログインID）を取得できる -->
+    <p>こんにちは、 <span sec:authentication="name"></span> さん！</p>
+
+    <!-- ログアウトフォーム -->
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">ログアウト</button>
+    </form>
+</div>
+
+<!-- ログインしていないユーザーにだけ表示される部分 -->
+<div sec:authorize="isAnonymous()">
+    <p><a th:href="@{/login}">ログイン</a>してください。</p>
+</div>
+
+<hr>
+<p>ここに投稿タイムラインなどが表示されます。</p>
+
+</body>
+</html>
