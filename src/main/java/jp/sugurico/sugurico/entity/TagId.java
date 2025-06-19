@@ -1,4 +1,4 @@
-package jp.sugurico.entity;
+package jp.sugurico.sugurico.entity;
 
 import lombok.Data;
 import java.io.Serializable;

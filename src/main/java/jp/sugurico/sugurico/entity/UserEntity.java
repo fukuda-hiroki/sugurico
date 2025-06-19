@@ -1,4 +1,4 @@
-package jp.sugurico.entity; // パッケージ名が正しいか確認
+package jp.sugurico.sugurico.entity; // パッケージ名が正しいか確認
 
 import jakarta.persistence.*; // JPA関連のアノテーションをインポート
 import lombok.Data; // Lombokをインポート

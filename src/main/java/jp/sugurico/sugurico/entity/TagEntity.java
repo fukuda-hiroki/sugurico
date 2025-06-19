@@ -1,4 +1,4 @@
-package jp.sugurico.entity;
+package jp.sugurico.sugurico.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
