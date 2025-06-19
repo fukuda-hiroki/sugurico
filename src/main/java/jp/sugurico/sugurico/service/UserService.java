@@ -86,4 +86,32 @@ public class UserService {
         // データベースに保存（IDが同じなので、UPDATE文が実行される）
         userRepository.save(userEntity);
     }
+
+    // jp/sugurico/sugurico/service/UserService.java に追加
+
+// ...
+
+    /**
+     * 【データ更新処理】ユーザーの退会（論理削除）
+     *
+     * 処理内容：
+     * 1. ログインIDを元に、データベースから更新対象のユーザー情報を取得します。
+     * 2. ユーザーの退会フラグ(withdrawal_flag)をtrueに設定します。
+     * 3. 更新日時を現在時刻に設定します。
+     * 4. 変更をデータベースに保存します。
+     *
+     * @param loginId 退会するユーザーのログインID
+     */
+    @Transactional
+    public void deleteUser(String loginId) {
+        // DBから現在の情報を取得
+        UserEntity userEntity = userRepository.findByLoginId(loginId).orElseThrow();
+
+        // 退会フラグを立てる
+        userEntity.setWithdrawalFlag(true);
+        userEntity.setDateUpdate(LocalDateTime.now());
+
+        // データベースに保存
+        userRepository.save(userEntity);
+    }
 }

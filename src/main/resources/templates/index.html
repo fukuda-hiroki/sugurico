@@ -1,4 +1,3 @@
-<!-- トップページ -->
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
@@ -12,6 +11,10 @@
 <div sec:authorize="isAuthenticated()">
     <!-- sec:authentication="name" で、ログイン中のユーザー名（この場合はログインID）を取得できる -->
     <p>こんにちは、 <span sec:authentication="name"></span> さん！</p>
+
+    <!-- ▼▼▼ ここからが追記部分 ▼▼▼ -->
+    <p><a th:href="@{/user/edit}">登録情報を変更する</a></p>
+    <!-- ▲▲▲ ここまでが追記部分 ▲▲▲ -->
 
     <!-- ログアウトフォーム -->
     <form th:action="@{/logout}" method="post">

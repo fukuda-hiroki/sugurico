@@ -28,8 +28,13 @@ public class SecurityConfig {
         http
                 // 認可（どのページに誰がアクセスできるか）の設定
                 .authorizeHttpRequests(authorize -> authorize
-                        // "/register" と "/css/**", "/js/**" などの静的リソースは、誰でもアクセス可能
-                        .requestMatchers("/register", "/css/**", "/js/**").permitAll()
+                        // "/css/**", "/js/**" などの静的リソースは、誰でもアクセス可能
+                        .requestMatchers("/css/**", "/js/**").permitAll()
+
+                        // ↓↓↓↓ ★この行を追加 ★ ↓↓↓↓
+                        // "/register" と "/login" は、匿名ユーザー（未ログイン）の場合のみアクセス可能
+                        .requestMatchers("/register", "/login").anonymous()
+
                         // それ以外のリクエストは、すべて認証（ログイン）が必要
                         .anyRequest().authenticated()
                 )
@@ -43,7 +48,7 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/", true)
                         // ログインに失敗した場合のリダイレクト先
                         .failureUrl("/login?error")
-                        // ログインページのアクセスは誰でも許可
+                        // ログインページのアクセスは誰でも許可（ただし上記のanonymous()が優先される）
                         .permitAll()
                 )
                 // ログアウトに関する設定

@@ -25,6 +25,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         // ユーザーが見つからなかった場合、例外をスロー
         UserEntity userEntity = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found with loginId: " + loginId));
 
+        // ▼▼▼ ここからが追記部分 ▼▼▼
+        // 退会済みのユーザーはログインさせない
+        if (userEntity.isWithdrawalFlag()) {
+            throw new UsernameNotFoundException("User not found with loginId: " + loginId);
+        }
+        // ▲▲▲ ここまでが追記部分 ▲▲▲
+
         // Spring Securityが理解できるUserDetailsオブジェクトに変換して返す
         return User.withUsername(userEntity.getLoginId())
                 .password(userEntity.getPassword()) // DBに保存されているハッシュ化済みのパスワード
