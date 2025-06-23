@@ -1,3 +1,4 @@
+<!-- 会員登録ページ -->
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -7,6 +8,10 @@
 <body>
 <h1>ユーザー登録</h1>
 
+
+<!-- 登録フォーム -->
+<!-- th:action="@{/register}" : フォームの送信先を /register (POST) に指定 -->
+<!-- th:object="${userForm}" : このフォームがUserFormオブジェクトに対応することを示す（今はまだ使いませんが後で重要になります） -->
 <!-- エラーメッセージの表示 -->
 <div th:if="${errorMessage}" style="color: red;">
     <p th:text="${errorMessage}"></p>
