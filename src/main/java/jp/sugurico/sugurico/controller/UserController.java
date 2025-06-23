@@ -31,13 +31,12 @@ public class UserController {
      * @return 表示するHTMLファイルのパス、またはリダイレクト先のURL
      */
     @GetMapping("/register")
-    public String showRegistrationForm(HttpServletRequest request) {
-        // 現在のリクエストから、ログインしているユーザーのプリンシパル（識別情報）を取得
+    public String showRegistrationForm(HttpServletRequest request, Model model) { // ★引数に Model を追加
         if (request.getUserPrincipal() != null) {
-            // ログインしている場合は、トップページにリダイレクト
             return "redirect:/";
         }
-        // ログインしていない場合は、通常通り登録ページを表示
+        // ★空のUserFormオブジェクトをModelに詰めて、HTML側に渡す
+        model.addAttribute("userForm", new UserForm());
         return "user/register";
     }
 
@@ -50,26 +49,21 @@ public class UserController {
      * @return 処理完了後のリダイレクト先URL
      */
     @PostMapping("/register")
-    public String registerUser(UserForm userForm, RedirectAttributes redirectAttributes) { // ★引数にRedirectAttributesを追加
+    public String registerUser(UserForm userForm, Model model) { // ★引数を Model に変更
         UserEntity userEntity = new UserEntity();
         BeanUtils.copyProperties(userForm, userEntity);
 
-        // UserServiceを呼び出し、結果（エラーメッセージ or null）を受け取る
         String errorMessage = userService.registerUser(userEntity);
 
-        // もしerrorMessageがnullでなければ（＝エラーがあった場合）
         if (errorMessage != null) {
-            // リダイレクト先にエラーメッセージと入力値を渡す
-            redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
-            redirectAttributes.addFlashAttribute("userForm", userForm);
-
-            // 登録ページにリダイレクトして、エラーメッセージを表示させる
-            return "redirect:/register";
+            // ★エラーメッセージと入力値をModelに詰めて、登録画面を再表示
+            model.addAttribute("errorMessage", errorMessage);
+            model.addAttribute("userForm", userForm);
+            return "user/register"; // ★リダイレクトではなく、直接HTMLを表示
         }
 
-        // 成功した場合は、登録完了メッセージを渡してログイン画面にリダイレクト
-        redirectAttributes.addFlashAttribute("successMessage", "ユーザー登録が完了しました。");
-        return "redirect:/login";
+        // 成功した場合はログイン画面にリダイレクト
+        return "redirect:/login?register_success";
     }
 
     /**

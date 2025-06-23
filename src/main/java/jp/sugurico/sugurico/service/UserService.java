@@ -26,8 +26,7 @@ public class UserService {
      * @return 登録に成功した場合はnull、重複エラーがあった場合はエラーメッセージの文字列
      */
     @Transactional
-    public String registerUser(UserEntity userEntity) { // ★戻り値を void から String に変更
-        // 重複チェック
+    public String registerUser(UserEntity userEntity) {
         if (userRepository.existsByLoginId(userEntity.getLoginId())) {
             return "このログインIDは既に使用されています。";
         }
@@ -35,14 +34,13 @@ public class UserService {
             return "このメールアドレスは既に使用されています。";
         }
 
-        // 登録処理
         LocalDateTime now = LocalDateTime.now();
         userEntity.setDateCreate(now);
         userEntity.setDateUpdate(now);
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         userRepository.save(userEntity);
 
-        return null; // 成功した場合はnullを返す
+        return null;
     }
 
     /**
