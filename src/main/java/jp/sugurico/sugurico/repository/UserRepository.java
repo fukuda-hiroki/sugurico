@@ -12,4 +12,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     // ★ログインIDを元にユーザーを検索するメソッドを追加
     // findBy + フィールド名 という命名規則に従うと、Spring Data JPAが自動でSQLを生成してくれる
     Optional<UserEntity> findByLoginId(String loginId);
+
+    boolean existsByLoginId(String loginId);
+    boolean existsByMail(String mail);
 }
