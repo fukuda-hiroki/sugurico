@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.http.HttpMethod;
 
 @Configuration // このクラスが設定用クラスであることを示す
 @EnableWebSecurity // Webセキュリティを有効にする
@@ -28,15 +29,22 @@ public class SecurityConfig {
         http
                 // 認可（どのページに誰がアクセスできるか）の設定
                 .authorizeHttpRequests(authorize -> authorize
-                        // "/css/**", "/js/**" などの静的リソースは、誰でもアクセス可能
-                        .requestMatchers("/css/**", "/js/**").permitAll()
+                                // ▼▼▼ ここからが修正・追記部分 ▼▼▼
 
-                        // ↓↓↓↓ ★この行を追加 ★ ↓↓↓↓
-                        // "/register" と "/login" は、匿名ユーザー（未ログイン）の場合のみアクセス可能
-                        .requestMatchers("/register", "/login").anonymous()
+                                // 【誰でもアクセス可能（ログイン不要）なページ】
+                                // 静的リソース（CSS, JavaScriptなど）
+                                .requestMatchers("/css/**", "/js/**").permitAll()
+                                // トップページ、ログインページ、ユーザー登録ページ
+                                .requestMatchers("/", "/login", "/register").permitAll()
+                                // 投稿一覧ページ、投稿詳細ページ (例: /posts, /posts/1)
+                                // ※注意：正規表現を使い、数字のIDを持つパスを指定
+                                .requestMatchers(HttpMethod.GET, "/posts", "/posts/{id:\\d+}").permitAll()
 
-                        // それ以外のリクエストは、すべて認証（ログイン）が必要
-                        .anyRequest().authenticated()
+                                // 【ログインしているユーザーのみアクセス可能なページ】
+                                // これら以外のすべてのリクエストは認証（ログイン）が必要
+                                .anyRequest().authenticated()
+
+                        // ▲▲▲ ここまでが修正・追記部分 ▲▲▲
                 )
                 // ログインに関する設定
                 .formLogin(login -> login
