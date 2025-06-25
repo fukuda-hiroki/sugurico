@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8">
+    <title>新規投稿</title>
+  </head>
+<body>
+  <h1>
+    新しい記録を投稿
+  </h1>
+  <form th:action = "@{/posts}" th:object = "${forumForm}" method="post">
+    <div>
+      <label for = "title">
+        タイトル:
+      </label>
+      <br>
+      <input type="text" id="title" th:field = "*{title}" required size = "50">
+    </div>
+    <div style="margin-top: 15px;">
+      <label for="text">
+        本文
+      </label>
+      <br>
+      <textarea id="text" th:field = "*{text}" rows="10" cols="50"></textarea>
+    </div>
+    <div style = "margin-top: 15px;">
+      <button type = "submit">
+        投稿する
+      </button>
+    </div>
+  </form>
+  <p>
+    <a th:href="@{/}">トップに戻る</a>
+  </p>
+</body>
+</html>
