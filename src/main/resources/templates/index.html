@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>スグリコ - トップページ</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
+
 <body>
 <h1>スグリコ へようこそ！</h1>
 
@@ -29,6 +31,14 @@
 
 <hr>
 <p>ここに投稿タイムラインなどが表示されます。</p>
+<!-- ボタンのデザインを決めるcss -->
 
+<!-- 
+  新規投稿ページへのリンクを持つフローティングボタン
+  th:if="${#authorization.expression('isAuthenticated()')}" でログイン中のみ表示
+-->
+<a th:href="@{/posts/new}" class="floting-button" th:if="${#authorization.expression('isAuthenticated()')}">
+    +
+</a>
 </body>
 </html>

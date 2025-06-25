@@ -54,7 +54,7 @@ public class ForumController {
         UserEntity loginUser = userService.findByLoginId(userDetails.getUsername()).orElseThrow();
 
         //  Serviceを呼び出して投稿処理を依頼
-        forumService.createPost(forumEntity,loginUser);
+        forumService.createPost(forumEntity,form.getExpires(),loginUser);
 
         return "redirect:/";    //  投稿後はトップページにリダイレクト
     }
