@@ -48,13 +48,13 @@ public class ForumController {
     public String createPost(ForumForm form,
                              @AuthenticationPrincipal UserDetails userDetails){
         ForumEntity forumEntity = new ForumEntity();
-        BeanUtils.copyProperties(form, forumEntity);
+        BeanUtils.copyProperties(form, forumEntity, "tags");
 
         //  ログイン中のユーザー処理情報を取得
         UserEntity loginUser = userService.findByLoginId(userDetails.getUsername()).orElseThrow();
 
         //  Serviceを呼び出して投稿処理を依頼
-        forumService.createPost(forumEntity,form.getExpires(),loginUser);
+        forumService.createPost(forumEntity,form.getExpires(), form.getTags(), loginUser);
 
         return "redirect:/";    //  投稿後はトップページにリダイレクト
     }

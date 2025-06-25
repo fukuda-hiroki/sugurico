@@ -35,7 +35,14 @@
       <input type="radio" name="expires" id="7days" value="7days" th:field="*{expires}"><label for="7days">7日</label>
       <input type="radio" name="expires" id="permanent" value="permanent" th:field="*{expires}"><label for="permanent">永続</label>
     </div>
-    
+    <div style="margin-top: 15px;">
+      <label>タグ(最大10個まで)</label>
+      <div id="tag-container">
+        <div class="tag-input-wrapper">
+          <input type="text" name="tags[0]" placeholder="タグを入力">
+        </div>
+      </div>
+    </div>
 
     <div style = "margin-top: 15px;">
       <button type = "submit">
