@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,17 +21,28 @@ public class TagSuggestController {
 
 
     @GetMapping("/suggest")
-    public List<String> suggestTags(@RequestParam("query") String query) {
+    public List<String> suggestTags(@RequestParam("query") String query,
+                                    @RequestParam(value = "exclude", required = false) List<String> excludeTags) {
         //  もし検索キーワードが空なら空のリストを返す
         if (query.isEmpty()) {
-            return List.of();
+            return Collections.emptyList();
         }
         //  DBから前方一致でタグを検索
         List<TagDicEntity> tags = tagDicRepository.findByTagNameStartingWith(query);
 
-        //  TagDicEntityのリストから、tagName(文字列)だけを抜き出して返す
+        // 除外リストが指定されていれば、フィルタリングする
+        if(excludeTags != null && !excludeTags.isEmpty()) {
+            return tags.stream()
+                    .map(TagDicEntity::getTagName)  // 除外リストに含まれていないものだけを残す
+                    .filter(tagName -> !excludeTags.contains(tagName))
+                    .limit(10)
+                    .collect(Collectors.toList());
+        }
+
+        // 除外リストがなければ、そのまま返す
         return tags.stream()
                 .map(TagDicEntity::getTagName)
+                .limit(10)
                 .collect(Collectors.toList());
     }
 
