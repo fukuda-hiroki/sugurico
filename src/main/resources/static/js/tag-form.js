@@ -82,7 +82,6 @@ function addTagInput() {
 
     wrapper.appendChild(newInput);
     tagContainer.appendChild(wrapper);
-    //newInput.focus();
 }
 
 async function fetchSuggestions(inputElement) {
