@@ -18,14 +18,14 @@ function handleTagInput(event) {
     clearTimeout(addInputTimer);
     addInputTimer = setTimeout(() => {
         if (targetInput.value.trim() === '' 
-    && !isLastInput(targetInput)) {
+        && !isLastInput(targetInput)) {
            targetInput.parentElement.remove();
            updateTagInputNames(); 
         } else if (isLastInput(targetInput) && 
-    targetInput.value.trim() !== '' &&
-tagContainer.children.length < maxTags) {
+        targetInput.value.trim() !== '' &&
+        tagContainer.children.length < maxTags) {
             addTagInput();
-        }
+        }5
     }, 150);    // 150ミリ秒待ってから実行
 
     // --- サジェスト機能の呼び出し（デバウンス） ---
@@ -82,7 +82,7 @@ function addTagInput() {
 
     wrapper.appendChild(newInput);
     tagContainer.appendChild(wrapper);
-    newInput.focus();
+    //newInput.focus();
 }
 
 async function fetchSuggestions(inputElement) {
