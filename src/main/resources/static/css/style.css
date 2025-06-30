@@ -15,3 +15,42 @@
     z-index: 1000;
     text-decoration: none;
 }
+
+
+/* サジェスト機能用のスタイル */
+/* 入力欄のラッパーを相対位置にする */
+.tag-input-wrapper{
+    position: relative;
+    margin-bottom: 5px;
+}
+
+/* 候補リストのスタイル */
+.suggestions-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ccc;
+    border-top: none;
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute;
+    width: 100%;
+    background-color: white;
+    z-index: 1001;
+}
+
+/* 候補リストの各項目のスタイル */
+.suggestions-list li{
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+/* マウスが乗った時の項目のスタイル */
+.suggestions-list li:hover {
+    background-color: #f0f0f0;
+}
+
+/* 候補リストをデフォルトで非表示にする */
+.suggestions-list:empty {
+    display: none;
+}

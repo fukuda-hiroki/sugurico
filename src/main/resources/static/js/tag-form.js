@@ -12,6 +12,8 @@ function handleTagInput(event) {
     }
     const targetInput = event.target;
 
+    fetchSuggestions(targetInput);
+
     //  もし入力欄が空になりかつそれが最後の入力欄でない場合
     if (targetInput.value.trim() === '' && !isLastInput(targetInput)) {
         targetInput.parentElement.remove();
@@ -25,6 +27,57 @@ function handleTagInput(event) {
     // もし入力欄が最後のもので、かつまだ最大数に達していない場合
     if(isLastInput(targetInput) && tagContainer.children.length < maxTags){
         addTagInput();
+    }
+}
+
+async function fetchSuggestions(inputElement) {
+    const query = inputElement.value.trim();
+// 入力値が1文字未満なら、サジェストをクリアして終了
+    if (query.length < 1) {
+        clearSuggestions(inputElement);
+        return;
+    }
+
+    try{// バックエンドのAPIにリクエストを送信
+        // ★ 既存の /api/tags/suggest を呼び出します
+        const response = await fetch(`/api/tags/suggest?query=${encodeURIComponent(query)}`);
+        if (!response.ok) throw new Error('Network response was not ok');
+         // レスポンスをJSONとして解析
+        const suggestions = await response.json();
+// 取得した候補でサジェストリストを表示
+        showSuggestions(inputElement,suggestions);
+
+    } catch (error) {
+        console.error('サジェストの取得に失敗しました:', error);
+        clearSuggestions(inputElement);
+    }
+}
+
+function showSuggestions(inputElement, suggestions) {
+    clearSuggestions(inputElement);// 既存のリストをクリア
+
+    if(suggestions.length === 0 ) return;
+
+    const suggestionsList = document.createElement('ul');
+    suggestionsList.className = 'suggestions-list';// CSSでスタイルを当てるためのクラス
+
+    suggestions.forEach(suggestionText => {
+        const listItem = document.createElement('li');
+        listItem.textContent = suggestionText;// ★'mousedown'イベント: 'click'だと入力欄のfocusoutが先に発火してしまうため
+        listItem.addEventListener('mousedown', () =>{
+            inputElement.value = suggestionText;// 候補をクリックしたら入力欄に値をセット
+            clearSuggestions(inputElement);// リストを消す
+        });
+        suggestionsList.appendChild(listItem);
+        // input要素の親要素(div.tag-input-wrapper)にサジェストリストを追加
+    });
+    inputElement.parentElement.appendChild(suggestionsList);
+}
+
+function clearSuggestions(inputElement) {
+    const existingList = inputElement.parentElement.querySelector('.suggestions-list');
+    if(existingList) {
+        existingList.remove()
     }
 }
 
